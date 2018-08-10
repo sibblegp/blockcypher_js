@@ -1,0 +1,17 @@
+{
+  "name": "blockcypher",
+  "version": "1.0.0",
+  "description": "Blockcypher Node Module",
+  "main": "blockcypher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "George Sibble",
+  "license": "MIT",
+  "dependencies": {
+    "@types/request": "^2.47.1",
+    "@types/request-promise-native": "^1.0.15",
+    "request": "^2.87.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
