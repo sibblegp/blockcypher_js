@@ -1,13 +1,24 @@
-//import * as request from 'request-promise-native'
-import request = require("request");
+import * as requestPromise from 'request-promise-native'
+import { UrlOptions } from 'request';
+import { BTCChainInterface, BTCChain } from './models/btc/chain'
+//import request = require("request");
 
 
-class BlockCypherAPI {
+export class BlockCypherAPI {
     //apiKey: string
     readonly apiUrl: string = 'https://api.blockcypher.com/v1'
     apiUrlExtension: string = ''
 
-    getBlockChain(){
+    async _makeRequest(req: UrlOptions){
+        let results: object = JSON.parse(await requestPromise(req))
+        console.log(results)
+        let p = new Promise<object>(function(resolve, reject) {
+            resolve(results)
+        })
+        return p
+    }
+
+    async getBlockChain(){
         let uri: string = this.apiUrl + this.apiUrlExtension + '/main'
         let req = {
             url: uri,
@@ -16,14 +27,13 @@ class BlockCypherAPI {
                 'Content-Type': 'application/json'
             }
         }
-        request(req, function(error: any, response: object, body: any){
-            console.log(body)
+        let results: BTCChainInterface = <BTCChainInterface> await this._makeRequest(req)
+        let chain: BTCChain = new BTCChain(results, this)
+        console.log(chain)
+        let p = new Promise<BTCChain>(function(resolve, reject) {
+            resolve(chain)
         })
-        
-    }
-
-    _makeRequest(req: object){
-
+        return p
     }
 }
 
