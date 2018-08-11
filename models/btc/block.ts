@@ -1,5 +1,4 @@
 import { BlockCypherAPI } from '../../blockcypher'
-import { resolve } from 'url';
 
 export interface BTCBlockInterface {
     hash: string
@@ -10,6 +9,7 @@ export interface BTCBlockInterface {
     ver: number
     time: string
     received_time: string
+    relayed_by: string
     bits: number
     nonce: number
     n_tx: number
@@ -31,6 +31,7 @@ export class BTCBlock{
     ver: number
     time: string
     received_time: string
+    relayed_by: string
     bits: number
     nonce: number
     n_tx: number
@@ -52,6 +53,7 @@ export class BTCBlock{
         this.ver = results.ver
         this.time = results.time
         this.received_time = results.received_time
+        this.relayed_by = results.relayed_by
         this.bits = results.bits
         this.nonce = results.nonce
         this.n_tx = results.n_tx
@@ -74,5 +76,17 @@ export class BTCBlock{
             resolve(previousBlock)
         })
         return p
+    }
+
+    async getTransaction(index: number){
+        if(index > this.n_tx){
+            
+        }else{
+            throw EvalError
+        }
+    }
+
+    async getAllTransactions(){
+        //TODO
     }
 }

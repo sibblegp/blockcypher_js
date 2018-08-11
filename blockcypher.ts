@@ -2,6 +2,7 @@ import * as requestPromise from 'request-promise-native'
 import { UrlOptions } from 'request';
 import { BTCChainInterface, BTCChain } from './models/btc/chain'
 import {BTCBlockInterface, BTCBlock } from './models/btc/block'
+import { BTCTransactionInterface } from './models/btc/transaction'
 //import request = require("request");
 
 
@@ -44,7 +45,7 @@ export class BlockCypherAPI {
     }
 
     async getBlock(hash: string){
-        let uri: string = this.apiUrl + this.apiUrlExtension + '/main/blocks/' + hash
+        let uri: string = this.apiUrl + this.apiUrlExtension + '/main/blocks/' + hash + '?limit=500'
         let req = {
             url: uri,
             method: 'GET',
@@ -60,6 +61,25 @@ export class BlockCypherAPI {
         })
         return p
     }
+
+    async getTransaction(hash: string){
+        let uri: string = this.apiUrl + this.apiUrlExtension + '/main/txs/' + hash + '?limit=500'
+        let req = {
+            url: uri,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+        let results: BTCTransactionInterface = <BTCTransactionInterface> await this._makeRequest(req)
+        return results
+        // let block: BTCBlock = new BTCBlock(results, this)
+        // console.log(block)
+        // let p = new Promise<BTCBlock>(function(resolve, reject) {
+        //     resolve(block)
+        // })
+        // return p
+    }
 }
 
 export class BTCApi extends BlockCypherAPI {
@@ -68,9 +88,10 @@ export class BTCApi extends BlockCypherAPI {
 
 async function test(){
     let btc = new BTCApi()
-    btc.getBlockChain()
-    let block = await btc.getBlock('0000000000000000189bba3564a63772107b5673c940c16f12662b3e8546b412')
-    block.getPreviousBlock()
+    //btc.getBlockChain()
+    //let block = await btc.getBlock('0000000000000000189bba3564a63772107b5673c940c16f12662b3e8546b412')
+    //block.getPreviousBlock()
+    btc.getTransaction('9cabfdef4010558f59da271aae13a57aa5f91901c132aa2709ee096d324c05b0')
 }
 
 test()
